@@ -1,26 +1,46 @@
 import React from 'react'
+import { formatISO9075 } from 'date-fns'
+import { Link } from 'react-router-dom'
 import styles from './Post.module.css'
+import PropTypes from 'prop-types'
 
-function Post() {
+export default function Post({
+  _id,
+  title,
+  summary,
+  cover,
+  createdAt,
+  author
+}) {
   return (
-    <div>
-      <div className={styles.post}>
-        <div className={styles.image}>
-          <img src='js.png' alt='js' />
-        </div>
-        <div className={styles.text}>
-          <h2>lorjsadljsakdjsakdjsjsdlskdjsadsakdjasfladfkldfkadj</h2>
-          <div className='info'>
-                <a className='author'>Ivan Lozic</a>
-                <time>2023-01-07 14:36</time>
-          </div>
-          <p>
-            das;jf;asdfahfha;djhfjkadhgjahdfjadhgawgeuioahiufh;aoijfdsfjaklfjksaj;jkdhaslkhdashdsalhdkfhkaslhfkadfkadfhdaklfhdkslsfhsdhflkadshglhsglsghsdlgslfdghfsdglkfghsdfhgllllslgsdfshglsfhlggdhhdsjjkgfdshhsgfkfkhjghdskhhjgjkkdkgfgjfkjkdgdsfjkghfkhgkdklgdgkgkdgk
-          </p>
-        </div>
+    <div className={styles.post}>
+      <div className={styles.image}>
+        <Link to={`/post/${_id}`}>
+          <img src={'http://localhost:4000/' + cover} alt='' />
+        </Link>
+      </div>
+      <div className={styles.text}>
+        <Link to={`/post/${_id}`}>
+          <h2>{title}</h2>
+        </Link>
+        <p className='info'>
+          <a className='author'>{author.username}</a>
+          <time>{formatISO9075(new Date(createdAt))}</time>
+        </p>
+        <p className='summary'>{summary}</p>
       </div>
     </div>
   )
 }
 
-export default Post
+Post.propTypes = {
+  _id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  summary: PropTypes.string.isRequired,
+  cover: PropTypes.string.isRequired,
+  content: PropTypes.string, // content prop is optional
+  createdAt: PropTypes.string.isRequired,
+  author: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }).isRequired,
+};
